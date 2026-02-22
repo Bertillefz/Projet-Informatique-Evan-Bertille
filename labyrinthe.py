@@ -11,7 +11,7 @@ class Noeud : # noeud de l'arbre
         self.question = donnees_question["question"]
         self.options = donnees_question["options"]
         self.reponse = donnees_question["reponse"]
-        self.droit = None # chemin B
+        self.droite = None # chemin B
         self.gauche = None # chemin A
         self.parent = None # la question d'avant
 
@@ -49,6 +49,7 @@ class Labyrinthe:
         self.temps_depart = time.time()
         self.difficulte = difficulte
         self.noeuds_erreurs = []
+        self.chemin = [] # PILE
 
     def options_possibles(self):
         " cette fonction retourne la liste des options possibles mélangées avec un chemin associé"
@@ -62,15 +63,21 @@ class Labyrinthe:
         # les options = options possibles [(option 1 ou 2, A), (option 1 ou 2, B)]
         if options[0][0] == self.noeud_courant.reponse : #si l'option A est la bonne réponse
             if reponse == "A":
+                if self.noeud_courant in self.noeuds_erreurs :
+                    self.noeuds_erreurs.remove(self.noeud_courant)
                 return True
             else:
-                self.noeuds_erreurs = self.noeud_courant
+                if self.noeud_courant not in self.noeuds_erreurs :
+                    self.noeuds_erreurs.append(self.noeud_courant)
                 return False
         else:
             if reponse == "B":
+                if self.noeud_courant in self.noeuds_erreurs :
+                    self.noeuds_erreurs.remove(self.noeud_courant)
                 return True
             else:
-                self.noeuds_erreurs = self.noeud_courant
+                if self.noeud_courant not in self.noeuds_erreurs:
+                    self.noeuds_erreurs.append(self.noeud_courant)
                 return False
 
     def peut_jouer(self):
@@ -85,12 +92,14 @@ class Labyrinthe:
         print(f"Temps restants : {(self.difficulte)*60 + self.temps_depart - time.time() }")
         print(self.noeud_courant.question)
 
-    def gagnant(self):
-        pass
+    #provisoire
+    def victoire(self):
+        return "\nBravo !! vous avez gagné"
 
 
 def tour_jeu(labyrinthe, question):
     labyrinthe.afficher_question(question)
+    labyrinthe.chemin.append(question) # on ajoute à la PILE
     options_melangees = labyrinthe.options_possibles()
     print(f"Choix possibles: {options_melangees[0][0]} (chemin A), {options_melangees[1][0]} (chemin B)")
     saisie = input("Veuillez indiquer le chemin que vous souhaitez prendre (A ou B) : ").strip().upper()
@@ -105,10 +114,37 @@ def tour_jeu(labyrinthe, question):
         labyrinthe.profondeur_courante += 1
         return nouvelle_question
 
+def cul_de_sac(labyrinthe, question):
+    print("\nCUL DE SAC")
+    print("Vous êtes arrivé dans un cul de sac :/")
+    input("\nAppuyez sur Entrée pour pouvoir revenir au question précédente... ")
+    question = question.parent
+    labyrinthe.afficher_question(question)
+    saisie = input("Remonter à la question précédente encore (oui/non) : ")
+    while saisie == "oui" and len(labyrinthe.chemin) >= 1 :
+        question = labyrinthe.chemin.pop() # il y a des piles ici aussi
+        labyrinthe.noeud_courant = question
+        labyrinthe.afficher_question(question)
+        labyrinthe.profondeur_courante -= 1
+        if labyrinthe.profondeur_courante == 1 :
+            print("Vous ne pouvez pas plus remonter : vous êtes au point de départ")
+            break # on sort de cul de sac
+        else :
+            saisie = input("Remonter à la question précédente encore (oui/non) : ")
+
 def jeu(labyrinthe):
     question = labyrinthe.noeud_courant #racine
     while labyrinthe.peut_jouer() :
-        question = tour_jeu(labyrinthe, question)
+        while labyrinthe.peut_jouer() and labyrinthe.profondeur_courante != labyrinthe.arbre.profondeur_max + 1 :
+            question = tour_jeu(labyrinthe, question)
+        if len(labyrinthe.noeuds_erreurs) == 0 and labyrinthe.profondeur_courante == labyrinthe.arbre.profondeur_max + 1 :
+            print(labyrinthe.victoire())
+            break # on sort du jeu
+        elif len(labyrinthe.noeuds_erreurs) != 0 and labyrinthe.peut_jouer() and labyrinthe.profondeur_courante == labyrinthe.arbre.profondeur_max + 1:
+            cul_de_sac(labyrinthe, question)
+        else :
+            print("Défaire :( temps écoulé ")
+
 
 """    while nouvelle_question is None:
         try:
