@@ -143,7 +143,7 @@ def jeu(labyrinthe):
         elif len(labyrinthe.noeuds_erreurs) != 0 and labyrinthe.peut_jouer() and labyrinthe.profondeur_courante == labyrinthe.arbre.profondeur_max + 1:
             cul_de_sac(labyrinthe, question)
         else :
-            print("Défaire :( temps écoulé ")
+            print("Défaite :( temps écoulé ")
 
 
 """    while nouvelle_question is None:
