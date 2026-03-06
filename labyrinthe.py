@@ -114,34 +114,44 @@ def tour_jeu(labyrinthe, question):
         labyrinthe.profondeur_courante += 1
         return nouvelle_question
 
-def cul_de_sac(labyrinthe, question):
+def cul_de_sac(labyrinthe):
     print("\nCUL DE SAC")
     print("Vous êtes arrivé dans un cul de sac :/")
     input("\nAppuyez sur Entrée pour pouvoir revenir au question précédente... ")
-    question = question.parent
-    labyrinthe.afficher_question(question)
-    saisie = input("Remonter à la question précédente encore (oui/non) : ")
-    while saisie == "oui" and len(labyrinthe.chemin) >= 1 :
-        question = labyrinthe.chemin.pop() # il y a des piles ici aussi
+
+
+
+    if len(labyrinthe.chemin) >=1 :
+        question = labyrinthe.chemin.pop()
         labyrinthe.noeud_courant = question
-        labyrinthe.afficher_question(question)
-        labyrinthe.profondeur_courante -= 1
-        if labyrinthe.profondeur_courante == 1 :
-            print("Vous ne pouvez pas plus remonter : vous êtes au point de départ")
-            break # on sort de cul de sac
+        labyrinthe.profondeur_courante -=1
+    else :
+        return
+
+    labyrinthe.afficher_question(question)
+
+    while labyrinthe.profondeur_courante >= 1 and len(labyrinthe.chemin) >= 1 :
+        saisie = input("Remonter à la question précédente encore (oui/non) : ")
+        if saisie == "oui":
+            question = labyrinthe.chemin.pop()  # il y a des piles ici aussi
+            labyrinthe.noeud_courant = question
+            labyrinthe.profondeur_courante -= 1
+            labyrinthe.afficher_question(question)
         else :
-            saisie = input("Remonter à la question précédente encore (oui/non) : ")
+            break  # on sort de cul de sac
+
+
+
 
 def jeu(labyrinthe):
-    question = labyrinthe.noeud_courant #racine
     while labyrinthe.peut_jouer() :
         while labyrinthe.peut_jouer() and labyrinthe.profondeur_courante != labyrinthe.arbre.profondeur_max + 1 :
-            question = tour_jeu(labyrinthe, question)
+            labyrinthe.noeud_courant = tour_jeu(labyrinthe, labyrinthe.noeud_courant)
         if len(labyrinthe.noeuds_erreurs) == 0 and labyrinthe.profondeur_courante == labyrinthe.arbre.profondeur_max + 1 :
             print(labyrinthe.victoire())
             break # on sort du jeu
         elif len(labyrinthe.noeuds_erreurs) != 0 and labyrinthe.peut_jouer() and labyrinthe.profondeur_courante == labyrinthe.arbre.profondeur_max + 1:
-            cul_de_sac(labyrinthe, question)
+            cul_de_sac(labyrinthe)
         else :
             print("Défaite :( temps écoulé ")
 
