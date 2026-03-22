@@ -36,9 +36,11 @@ laby = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         ]
 
+question_prof1 = [(4,28)]
+questions_prof2 = []
+bon_chemin = []
+
 #couleurs
-
-
 
 
 class Carte :
@@ -57,7 +59,26 @@ class Carte :
                 if case == 1:
                     pygame.draw.rect(self.ecran, mur_couleur, rect)
                 elif case == 2:
-                    pygame.draw.rect(self.ecran, question_couleur, rect)
+                    question = pygame.image.load("images/question.png")
+                    question = pygame.transform.scale(question, (20, 20))
+                    self.ecran.blit(question, (j * 20, i * 20))
+
+
+
+from labyrinthe import Arbre, Noeud, Labyrinthe
+
+# VOIR https://github.com/formazione/pygame_quiz/tree/main
+class Question :
+
+    def __init__(self):
+        self.longueur = len(laby[0]) * 20
+        self.largeur = len(laby) * 20
+
+    def afficher(self, surface):
+        rect = pygame.Rect((self.longueur//2 - (self.longueur - 100)//2), (self.largeur//2 - (self.largeur - 100)//2), self.longueur - 100, self.largeur - 100)
+        pygame.draw.rect(surface, (0, 0, 0), rect)
+
+
 
 
 
@@ -76,15 +97,7 @@ class Joueur:
     def afficher(self, surface):
         surface.blit(self.pacman, (self.x_perso * 20, self.y_perso * 20))
 
-from labyrinthe import Arbre, Noeud, Labyrinthe
 
-class Question :
-
-    def __init__(self, type_questions):
-        pass
-
-    def afficher_question(self):
-        pass
 
 class Game:
     def __init__(self):
@@ -96,6 +109,7 @@ class Game:
         self.carte = Carte()
         self.joueur = Joueur()
         self.running = True
+        self.question = Question()
 
     def masque(self):
         masque = pygame.Surface((self.longueur, self.largeur), pygame.SRCALPHA)
@@ -105,7 +119,9 @@ class Game:
         pygame.draw.circle(masque, (0, 0, 0, 0), centre_pacman, rayon)
         self.ecran.blit(masque, (0, 0))
 
+
     def run(self):
+        afficher_question = False
         while self.running:
             x = self.joueur.x_perso
             y = self.joueur.y_perso
@@ -131,10 +147,17 @@ class Game:
                     if 0 <= y < self.largeur and 0 <= x < self.longueur :
                         if laby[y][x] != 1:
                             self.joueur.x_perso, self.joueur.y_perso = x, y
+                        if laby[y][x] == 2:
+                            afficher_question = True
+
 
             self.carte.afficher()
             self.joueur.afficher(self.ecran)
             #self.masque()
+
+            if afficher_question :
+                self.question.afficher(self.ecran)
+
             pygame.display.flip()
 
         pygame.quit()
