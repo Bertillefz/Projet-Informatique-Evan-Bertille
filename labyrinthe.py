@@ -105,29 +105,25 @@ def tour_jeu(labyrinthe, question):
     saisie = input("Veuillez indiquer le chemin que vous souhaitez prendre (A ou B) : ").strip().upper()
     if labyrinthe.reponse_valide(saisie, options_melangees) :
         nouvelle_question = question.gauche
-        labyrinthe.noeud_courant = nouvelle_question
-        labyrinthe.profondeur_courante +=1
-        return nouvelle_question
     else :
         nouvelle_question = question.droite
-        labyrinthe.noeud_courant = nouvelle_question
-        labyrinthe.profondeur_courante += 1
-        return nouvelle_question
+    labyrinthe.noeud_courant = nouvelle_question
+    labyrinthe.profondeur_courante += 1
+    return nouvelle_question
 
 def cul_de_sac(labyrinthe):
     print("\nCUL DE SAC")
     print("Vous êtes arrivé dans un cul de sac :/")
     input("\nAppuyez sur Entrée pour pouvoir revenir au question précédente... ")
 
-
-
     if len(labyrinthe.chemin) >=1 :
         question = labyrinthe.chemin.pop()
         labyrinthe.noeud_courant = question
         labyrinthe.profondeur_courante -=1
+        if labyrinthe.noeud_courant in labyrinthe.noeuds_erreurs:
+            labyrinthe.noeuds_erreurs.remove(labyrinthe.noeud_courant)
     else :
         return
-
     labyrinthe.afficher_question(question)
 
     while labyrinthe.profondeur_courante >= 1 and len(labyrinthe.chemin) >= 1 :
@@ -137,6 +133,8 @@ def cul_de_sac(labyrinthe):
             labyrinthe.noeud_courant = question
             labyrinthe.profondeur_courante -= 1
             labyrinthe.afficher_question(question)
+            if labyrinthe.noeud_courant in labyrinthe.noeuds_erreurs:
+                labyrinthe.noeuds_erreurs.remove(labyrinthe.noeud_courant)
         else :
             break  # on sort de cul de sac
 
@@ -154,58 +152,6 @@ def jeu(labyrinthe):
             cul_de_sac(labyrinthe)
         else :
             print("Défaite :( temps écoulé ")
-
-
-"""    while nouvelle_question is None:
-        try:
-            saisie = input("Veuillez indiquer le chemin que vous souhaitez prendre (A ou B) : ").strip().upper()
-            if saisie == "A":
-                nouvelle_question = None
-                labyrinthe.profondeur_courante += 1
-                return nouvelle_question
-            elif saisie == "B" :
-
-            else:
-                print(f"Ce n'est pas dans les options possibles ")
-        except ValueError:
-            print("Veuillez utiliser la notation du type : A, B")"""
-
-
-"""    if labyrinthe.peut_jouer(): #si on est dans les temps
-        if labyrinthe.arbre.profondeur_max == labyrinthe.profondeur_courante : # si on est sur les feuilles
-            if labyrinthe.question == labyrinthe.arbre.solution :
-                print("\nVous avez gagné !!!")
-                print("Voici vos 10 millions d'euros")
-            else :
-                print("\nVous êtes dans un cul de sac :/ essayer d'en sortir ")
-
-        else : #si on est dans les questions
-            print(f"\nQUESTION {labyrinthe.profondeur_courante}")
-    else:
-        print("\nVous avez perdu :( vous avez dépassé le temps")"""
-
-
-"""    def __str__(self):
-        if self.peut_jouer():
-            retour = "QUESTION " + self.profondeur_courante
-            retour += "Temps restants : " + ((self.difficulte)*60 - time.time() - self.temps_depart)
-            retour += self.noeud_courant.question
-            retour += "Choix possibles: " +  + " (chemin A) " + self.options_possibles()[1] + " (chemin B)"
-            return retour
-        else:
-            retour = "DEFAITE :("
-            retour += "Vous n'avez pas trouvé la sortie à temps ..."
-            return retour
-"""
-
-
-"""    def descente(self):
-        self.profondeur_courante +=1
-
-    def remonter(self):
-        question = self.noeud_courant.parent.question
-        self.profondeur_courante -=1
-        return question"""
-
+            break
 
 
