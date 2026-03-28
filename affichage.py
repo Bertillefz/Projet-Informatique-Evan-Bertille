@@ -1,24 +1,23 @@
 import pygame
 import sys
-
+import random
 from questions import questions_tests, questions_geographie
 
 # 1 les murs
 # 0 le chemins
 # 2 les intersections entre des chemins : où on pose la questions
 
-
 laby = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-        [1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0],
-        [1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1],
-        [1, 2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1],
+        [1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, "F"],
+        [1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 5, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1],
+        [1, 2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 5, 1, 0, 0, 0, 1],
         [1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1],
         [1, 0, 1, 0, 0, 0, 0, 0, 2, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 2, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
         [1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1],
-        [1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1],
+        [1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, 0, 0, 0, 1],
         [1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1],
-        [1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 5, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1],
         [1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1],
         [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
         [1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1],
@@ -27,42 +26,46 @@ laby = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         [1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1],
         [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1],
         [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1],
-        [1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1],
+        [1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 5, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1],
         [1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 5, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 1],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1],
         [1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1],
         [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 2, 1],
         [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1],
         [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1],
-        [0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+        ["D", 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         ]
 
-# coordonées x, y (colonne, ligne)
+# coordonées x, y (colonne, ligne) (x et y commencent à 0)
 intersections = {
-    (4,28): {"profondeur" : 1,
-             "bonne_reponse" : (5,28),
-             "mauvaise_reponse" : (4,27)},
-    (17,28): {"profondeur" : 2,
-             "bonne_reponse" : (17,27),
-             "mauvaise_reponse" : (18,28)},
-    (2,5): {"profondeur" : 2,
-             "bonne_reponse" : (2,4),
-             "mauvaise_reponse" : (3,5)},
-    (9,7): {"profondeur" : 3,
-             "bonne_reponse" : (8,7),
-             "mauvaise_reponse" : (9,8)},
-    (23,7): {"profondeur" : 3,
-             "bonne_reponse" : (24,7),
-             "mauvaise_reponse" : (23,6)},
-    (39,25): {"profondeur" : 3,
-             "bonne_reponse" : (38,25),
-             "mauvaise_reponse" : (39,24)},
-    (34,22): {"profondeur" : 3,
-             "bonne_reponse" : (35,22),
-             "mauvaise_reponse" : (33,22)}
+    (3,27): {"profondeur" : 1,
+             "bonne_reponse" : (4,27),
+             "mauvaise_reponse" : (3,26),
+             "enfants" : [(16,27), (1,4)]},
+    (16,27): {"profondeur" : 2,
+             "bonne_reponse" : (16,26),
+             "mauvaise_reponse" : (17,27),
+              "enfants" : [(38,24), (33,21)]},
+    (1,4): {"profondeur" : 2,
+             "bonne_reponse" : (1,3),
+             "mauvaise_reponse" : (2,4),
+            "enfants" : [(8,6),(22,6)]},
+    (8,6): {"profondeur" : 3,
+             "bonne_reponse" : (7,6),
+             "mauvaise_reponse" : (8,7)},
+    (22,6): {"profondeur" : 3,
+             "bonne_reponse" : (23,6),
+             "mauvaise_reponse" : (22,5)},
+    (38,24): {"profondeur" : 3,
+             "bonne_reponse" : (37,24),
+             "mauvaise_reponse" : (38,23)},
+    (33,21): {"profondeur" : 3,
+             "bonne_reponse" : (34,21),
+             "mauvaise_reponse" : (32,21)}
 }
+
 
 class Carte :
 
@@ -83,28 +86,89 @@ class Carte :
                     question = pygame.image.load("images/question.png")
                     question = pygame.transform.scale(question, (20, 20))
                     self.ecran.blit(question, (j * 20, i * 20))
+                elif case == "D" or case == "F":
+                    question = pygame.image.load("images/drapeau.png")
+                    question = pygame.transform.scale(question, (20, 20))
+                    self.ecran.blit(question, (j * 20, i * 20))
+                elif case == 5:
+                    question = pygame.image.load("images/retour.png")
+                    question = pygame.transform.scale(question, (20, 20))
+                    self.ecran.blit(question, (j * 20, i * 20))
 
-import random
-import questions
-from labyrinthe import Arbre, Noeud, Labyrinthe
-
-# VOIR https://github.com/formazione/pygame_quiz/tree/main
 
 class Question:
+    def __init__(self, coordonnees, donnees_intersection, donnee_question):
+        self.coordonnees = coordonnees
+        self.profondeur = donnees_intersection["profondeur"]
+        self.bon_chemin = donnees_intersection["bonne_reponse"]
+        self.mauvais_chemin = donnees_intersection["mauvaise_reponse"]
+        self.choixA = None
+        self.choixB = None
+        self.bonne_touche = None
+        self.question = donnee_question["question"]
+        self.enfants = []
+
+    def melange_choix(self, donnees_question):
+        choix = [donnees_question["options"][0], donnees_question["options"][1]]
+        random.shuffle(choix)
+        self.choixA = choix[0]
+        self.choixB = choix[1]
+        if self.choixA == donnees_question["reponse"]:
+            self.bonne_touche = pygame.K_a
+        else:
+            self.bonne_touche = pygame.K_b
+
+class Arbre:
+    def __init__(self, coordonnee_racine, type_question):
+        self.type_question = type_question.copy()
+        self.noeuds = {}
+        self.racine = self.creer_arbre(coordonnee_racine)
+
+
+    def creer_arbre(self, coordonnee):
+        if coordonnee not in intersections :
+            return None
+
+        donnees_question = random.choice(self.type_question)
+        self.type_question = [d for d in self.type_question if d != donnees_question]
+        noeud = Question(coordonnee, intersections[coordonnee], donnees_question)
+
+        noeud.melange_choix(donnees_question)
+        self.noeuds[coordonnee] = noeud
+
+        if "enfants" in intersections[coordonnee]:
+            for coordonnee_enfant in intersections[coordonnee]["enfants"]:
+                enfant = self.creer_arbre(coordonnee_enfant)
+                noeud.enfants.append(enfant)
+        return noeud
+
+
+class AffichageQuestion :
 
     def __init__(self):
         self.longueur = len(laby[0]) * 20
         self.largeur = len(laby) * 20
-        #self.coord = x, y
-        #self.coord_bon = x_bonne_rep, y_bonne_rep
-        #self.coord_mauvais = x_mauvaise, y_mauvaise
-        #super().__init__(donnees_question)
 
-    def afficher(self, surface):
-        rect = pygame.Rect((self.longueur//2 - (self.longueur - 100)//2), (self.largeur//2 - (self.largeur - 100)//2), self.longueur - 100, self.largeur - 100)
+    def afficher(self, surface, noeud):
+        rect = pygame.Rect(0, (self.largeur // 2 - 150), self.longueur, 300)
         pygame.draw.rect(surface, (0, 0, 0), rect)
+        pygame.draw.rect(surface, (0, 0, 255), rect, 20)  # Bordure
+
+        police = pygame.font.SysFont("Consolas", 20, True)
+
+        surf_q = police.render(noeud.question, True, (255, 255, 255))
+        rect_q = surf_q.get_rect(center=(rect.centerx, rect.centery - 60))
+        surface.blit(surf_q, rect_q)
+
+        surf_a = police.render(f"A : {noeud.choixA}", True, (230, 206, 242))
+        rect_a = surf_a.get_rect(center=(rect.centerx, rect.centery + 20))
+        surface.blit(surf_a, rect_a)
+        surf_b = police.render(f"B : {noeud.choixB}", True, (230, 206, 242))
+        rect_a = surf_a.get_rect(center=(rect.centerx, rect.centery + 70))
+        surface.blit(surf_b, rect_a)
 
 
+# VOIR https://github.com/formazione/pygame_quiz/tree/main
 
 class Joueur:
 
@@ -137,10 +201,18 @@ class Game:
         self.largeur = len(laby) * 20
         self.ecran = pygame.display.set_mode((self.longueur, self.largeur))
         pygame.display.set_caption("Labyrinthe")
+
         self.carte = Carte()
         self.joueur = Joueur()
         self.running = True
-        self.question = Question()
+
+        self.arbre=Arbre((3,27), questions_geographie)
+
+        self.affiche_question = False
+        self.coordonnees_question = None
+        self.interface = AffichageQuestion()
+        self.noeud = None # où le joueur se trouve
+        self.chemin = []
 
     def masque(self):
         masque = pygame.Surface((self.longueur, self.largeur), pygame.SRCALPHA)
@@ -150,51 +222,61 @@ class Game:
         pygame.draw.circle(masque, (0, 0, 0, 0), centre_pacman, rayon)
         self.ecran.blit(masque, (0, 0))
 
-
     def run(self):
-        afficher_question = False
         while self.running:
             x = self.joueur.x_perso
             y = self.joueur.y_perso
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_DOWN:
-                        y += 1
-                        self.joueur.pacman = self.joueur.pacmans[3]
-                    if event.key == pygame.K_UP:
-                        y -= 1
-                        self.joueur.pacman = self.joueur.pacmans[2]
-                    if event.key == pygame.K_LEFT:
-                        x -= 1
-                        self.joueur.pacman = self.joueur.pacmans[1]
-                    if event.key == pygame.K_RIGHT:
-                        x += 1
-                        self.joueur.pacman = self.joueur.pacmans[0]
-                    if 0 <= y < self.largeur and 0 <= x < self.longueur :
-                        if laby[y][x] != 1:
+                    if self.affiche_question and self.noeud is not None:
+                        if event.key in [pygame.K_a,pygame.K_b]:
+                            info = intersections[self.coordonnees_question]
+                            if event.key == self.noeud.bonne_touche :
+                                x, y = self.noeud.bon_chemin
+                                reponse_correcte = True
+                            else:
+                                x, y = self.noeud.mauvais_chemin
+                                reponse_correcte = False
                             self.joueur.x_perso, self.joueur.y_perso = x, y
-                        if laby[y][x] == 2:
-                            afficher_question = True
-
+                            self.chemin.append((self.noeud.coordonnees, reponse_correcte))
+                            self.affiche_question = False
+                    else :
+                        if event.key == pygame.K_DOWN:
+                            y += 1
+                            self.joueur.pacman = self.joueur.pacmans[3]
+                        if event.key == pygame.K_UP:
+                            y -= 1
+                            self.joueur.pacman = self.joueur.pacmans[2]
+                        if event.key == pygame.K_LEFT:
+                            x -= 1
+                            self.joueur.pacman = self.joueur.pacmans[1]
+                        if event.key == pygame.K_RIGHT:
+                            x += 1
+                            self.joueur.pacman = self.joueur.pacmans[0]
+                        if 0 <= y < self.largeur and 0 <= x < self.longueur :
+                            if laby[y][x] != 1:
+                                self.joueur.x_perso, self.joueur.y_perso = x, y
+                            if laby[y][x] == 2:
+                                self.coordonnees_question = (x,y)
+                                self.noeud = self.arbre.noeuds[(x,y)]
+                                self.affiche_question = True
 
             self.carte.afficher()
             self.joueur.afficher(self.ecran)
             #self.masque()
 
-            if afficher_question :
-                self.question.afficher(self.ecran)
+            if self.affiche_question :
+                self.interface.afficher(self.ecran, self.noeud)
 
             pygame.display.flip()
 
         pygame.quit()
 
 game = Game()
-#game.run()
+game.run()
+
 
 
 
