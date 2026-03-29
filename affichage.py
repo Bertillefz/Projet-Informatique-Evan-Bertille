@@ -84,15 +84,15 @@ class Carte :
                 if case == 1:
                     pygame.draw.rect(self.ecran, mur_couleur, rect)
                 elif case == 2:
-                    question = pygame.image.load("images/question.png")
+                    question = pygame.image.load("images/icones/question.png")
                     question = pygame.transform.scale(question, (20, 20))
                     self.ecran.blit(question, (j * 20, i * 20))
                 elif case == "D" or case == "F":
-                    question = pygame.image.load("images/drapeau.png")
+                    question = pygame.image.load("images/icones/drapeau.png")
                     question = pygame.transform.scale(question, (20, 20))
                     self.ecran.blit(question, (j * 20, i * 20))
                 elif case == 5:
-                    question = pygame.image.load("images/retour.png")
+                    question = pygame.image.load("images/icones/retour.png")
                     question = pygame.transform.scale(question, (20, 20))
                     self.ecran.blit(question, (j * 20, i * 20))
 
@@ -190,6 +190,18 @@ def afficher_regles(surface, longueur, largeur):
     surface.blit(regles, (longueur // 2 - min(longueur, largeur) // 2, largeur // 2 - min(longueur, largeur) // 2))
 
 
+class Monstre:
+
+    def __init__(self):
+        self.points = 3000
+
+    def attaque(self):
+        #s'il recoit des billes : -500 de points pour lui
+        pass
+
+    def deplacement(self):
+        pass
+
 # VOIR https://github.com/formazione/pygame_quiz/tree/main
 
 class Joueur:
@@ -198,11 +210,12 @@ class Joueur:
         self.pacmans = []
         self.x_perso = 0
         self.y_perso = 27
-        for pacman_image in ["images/pacman_droite.png", "images/pacman_gauche.png", "images/pacman_haut.png", "images/pacman_bas.png"]:
+        for pacman_image in ["images/pacmans/pacman_droite.png", "images/pacmans/pacman_gauche.png", "images/pacmans/pacman_haut.png", "images/pacmans/pacman_bas.png"]:
             pacman = pygame.image.load(pacman_image)
             pacman = pygame.transform.scale(pacman, (20, 20))
             self.pacmans.append(pacman)
         self.pacman = self.pacmans[0]
+        self.vies = 3
 
     def afficher(self, surface):
         surface.blit(self.pacman, (self.x_perso * 20, self.y_perso * 20))
@@ -218,6 +231,11 @@ class Joueur:
         defaite = pygame.image.load("images/defaite.png")
         defaite = pygame.transform.scale(defaite, (min(longueur,largeur), min(longueur,largeur)))
         surface.blit(defaite, (longueur // 2 - min(longueur, largeur) // 2, largeur // 2 - min(longueur, largeur) // 2))
+
+    def attaque(self):
+        # si collision avec monstres : perd 1 vie
+        # si perd ses 3 vies : defaite
+        pass
 
 
 
@@ -267,7 +285,7 @@ class Game:
                             self.temps_debut = time.time()
                 continue
 
-            if (5 + self.temps_debut - time.time()) < 0:
+            if (60 + self.temps_debut - time.time()) < 0:
                 self.jeu_en_cours = False
                 self.joueur.defaite(self.ecran, self.longueur, self.largeur)
 
@@ -338,6 +356,7 @@ class Game:
                 self.carte.afficher()
                 self.joueur.afficher(self.ecran)
                 self.masque()
+                #afficher les monstres au dessus du masque
 
                 if self.affiche_question :
                     afficher_question(self.ecran, self.noeud, self.longueur, self.largeur)
