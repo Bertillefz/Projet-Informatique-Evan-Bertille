@@ -1,14 +1,15 @@
 import pygame
-import sys
 import random
-from questions import questions_tests, questions_geographie
+from questions import questions_geographie
+import time
 
 # 1 les murs
 # 0 le chemins
 # 2 les intersections entre des chemins : où on pose la questions
 
+# amelioration !!!!!!!
 laby = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+        [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 5, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
         [1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, "F"],
         [1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 5, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1],
         [1, 2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 5, 1, 0, 0, 0, 1],
@@ -38,6 +39,7 @@ laby = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         ]
 
+# amelioration !!!!!!!
 # coordonées x, y (colonne, ligne) (x et y commencent à 0)
 intersections = {
     (3,27): {"profondeur" : 1,
@@ -73,13 +75,12 @@ class Carte :
         self.ecran = pygame.display.get_surface()
 
     def afficher(self):
-        question_couleur = (60, 179, 113)
         fond_couleur = (0, 0, 0)
         mur_couleur = (0, 0, 255)
         self.ecran.fill(fond_couleur)
         for i, ligne in enumerate(laby):
             for j, case in enumerate(ligne):
-                rect = pygame.Rect(j * 20, i * 20, 20, 20)
+                rect = pygame.Rect(j * 20, i * 20, 20, 20) # amelioration !!!!!!!
                 if case == 1:
                     pygame.draw.rect(self.ecran, mur_couleur, rect)
                 elif case == 2:
@@ -143,30 +144,44 @@ class Arbre:
         return noeud
 
 
-class AffichageQuestion :
+#les affichages des messages
 
-    def __init__(self):
-        self.longueur = len(laby[0]) * 20
-        self.largeur = len(laby) * 20
+def afficher_question(surface, noeud, longueur, largeur):
+    rect = pygame.Rect(0, (largeur // 2 - 150), longueur, 300)
+    pygame.draw.rect(surface, (0, 0, 0), rect)
+    pygame.draw.rect(surface, (0, 0, 255), rect, 20)
 
-    def afficher(self, surface, noeud):
-        rect = pygame.Rect(0, (self.largeur // 2 - 150), self.longueur, 300)
-        pygame.draw.rect(surface, (0, 0, 0), rect)
-        pygame.draw.rect(surface, (0, 0, 255), rect, 20)  # Bordure
+    police = pygame.font.SysFont("Consolas", 18, True)
 
-        police = pygame.font.SysFont("Consolas", 20, True)
+    surf_q = police.render(noeud.question, True, (255, 255, 255))
+    rect_q = surf_q.get_rect(center=(rect.centerx, rect.centery - 60))
+    surface.blit(surf_q, rect_q)
 
-        surf_q = police.render(noeud.question, True, (255, 255, 255))
-        rect_q = surf_q.get_rect(center=(rect.centerx, rect.centery - 60))
-        surface.blit(surf_q, rect_q)
+    surf_a = police.render(f"A : {noeud.choixA}", True, (230, 206, 242))
+    rect_a = surf_a.get_rect(center=(rect.centerx, rect.centery + 20))
+    surface.blit(surf_a, rect_a)
+    surf_b = police.render(f"B : {noeud.choixB}", True, (230, 206, 242))
+    rect_a = surf_a.get_rect(center=(rect.centerx, rect.centery + 70))
+    surface.blit(surf_b, rect_a)
 
-        surf_a = police.render(f"A : {noeud.choixA}", True, (230, 206, 242))
-        rect_a = surf_a.get_rect(center=(rect.centerx, rect.centery + 20))
-        surface.blit(surf_a, rect_a)
-        surf_b = police.render(f"B : {noeud.choixB}", True, (230, 206, 242))
-        rect_a = surf_a.get_rect(center=(rect.centerx, rect.centery + 70))
-        surface.blit(surf_b, rect_a)
 
+def afficher_retour(surface, longueur,largeur):
+    rect = pygame.Rect(0, (largeur // 2 - 100), longueur, 200)
+    pygame.draw.rect(surface, (0, 0, 0), rect)
+    pygame.draw.rect(surface, (255, 0, 0), rect, 20)
+
+    police = pygame.font.SysFont("Consolas", 18, True)
+    surface_annonce = police.render("Oups cul-de-sac : vous êtes de retour à la dernière intersection", True, (255, 255, 255))
+    rect_annonce = surface_annonce.get_rect(center=(rect.centerx, rect.centery - 40))
+    surface.blit(surface_annonce, rect_annonce)
+
+    surface_question_1 = police.render("Souhaites-tu y rester (1)", True, (230, 206, 242))
+    rect_question_1 = surface_question_1.get_rect(center=(rect.centerx, rect.centery + 20))
+    surface.blit(surface_question_1, rect_question_1)
+
+    surface_question_2 = police.render("ou remonter encore à la question précédente (2) ?", True, (230, 206, 242))
+    rect_question_2 = surface_question_2.get_rect(center=(rect.centerx, rect.centery + 40))
+    surface.blit(surface_question_2, rect_question_2)
 
 # VOIR https://github.com/formazione/pygame_quiz/tree/main
 
@@ -182,14 +197,20 @@ class Joueur:
             self.pacmans.append(pacman)
         self.pacman = self.pacmans[0]
 
-    def bloquer_joueur(self):
-        pass
-
-    def repondre(self):
-        pass
-
     def afficher(self, surface):
         surface.blit(self.pacman, (self.x_perso * 20, self.y_perso * 20))
+
+    def victoire(self, surface, longueur, largeur):
+        surface.fill((0,0,0))
+        victoire = pygame.image.load("images/victoire.png")
+        victoire = pygame.transform.scale(victoire, (min(longueur, largeur), min(longueur, largeur)))
+        surface.blit(victoire, (longueur // 2 - min(longueur, largeur) // 2, largeur // 2 - min(longueur, largeur) // 2))
+
+    def defaite(self, surface, longueur, largeur):
+        surface.fill((0,0,0))
+        defaite = pygame.image.load("images/defaite.png")
+        defaite = pygame.transform.scale(defaite, (min(longueur,largeur), min(longueur,largeur)))
+        surface.blit(defaite, (longueur // 2 - min(longueur, largeur) // 2, largeur // 2 - min(longueur, largeur) // 2))
 
 
 
@@ -206,17 +227,19 @@ class Game:
         self.joueur = Joueur()
         self.running = True
 
-        self.arbre=Arbre((3,27), questions_geographie)
+        self.arbre=Arbre((3,27), questions_geographie) # amelioration !!!!!!!
+        self.temps_debut = time.time()
 
         self.affiche_question = False
+        self.affiche_retour = False
         self.coordonnees_question = None
-        self.interface = AffichageQuestion()
+        self.jeu_en_cours = True
         self.noeud = None # où le joueur se trouve
         self.chemin = []
 
     def masque(self):
         masque = pygame.Surface((self.longueur, self.largeur), pygame.SRCALPHA)
-        rayon = 150
+        rayon = 100
         masque.fill((0, 0, 0, 255))
         centre_pacman = (self.joueur.x_perso * 20 + 10, self.joueur.y_perso * 20 + 10)
         pygame.draw.circle(masque, (0, 0, 0, 0), centre_pacman, rayon)
@@ -224,15 +247,21 @@ class Game:
 
     def run(self):
         while self.running:
+
+            if (5 + self.temps_debut - time.time()) < 0:
+                self.jeu_en_cours = False
+                self.joueur.defaite(self.ecran, self.longueur, self.largeur)
+
             x = self.joueur.x_perso
             y = self.joueur.y_perso
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
+
                 if event.type == pygame.KEYDOWN:
+                    # les questions
                     if self.affiche_question and self.noeud is not None:
                         if event.key in [pygame.K_a,pygame.K_b]:
-                            info = intersections[self.coordonnees_question]
                             if event.key == self.noeud.bonne_touche :
                                 x, y = self.noeud.bon_chemin
                                 reponse_correcte = True
@@ -242,6 +271,20 @@ class Game:
                             self.joueur.x_perso, self.joueur.y_perso = x, y
                             self.chemin.append((self.noeud.coordonnees, reponse_correcte))
                             self.affiche_question = False
+                    # le retour : on tape soit 1 soit 2
+                    elif self.affiche_retour :
+                        if event.key in [pygame.K_1, pygame.K_KP1]:
+                            self.affiche_retour = False
+                            self.affiche_question = True
+                        elif event.key in [pygame.K_2, pygame.K_KP2] :
+                            if len(self.chemin) > 0:
+                                derniere_coordonnee, reponse = self.chemin.pop()
+                                self.joueur.x_perso, self.joueur.y_perso = derniere_coordonnee
+                                self.coordonnees_question = derniere_coordonnee
+                                self.noeud = self.arbre.noeuds[derniere_coordonnee]
+                            else :
+                                self.affiche_retour = False
+                                self.affiche_question = True
                     else :
                         if event.key == pygame.K_DOWN:
                             y += 1
@@ -262,13 +305,25 @@ class Game:
                                 self.coordonnees_question = (x,y)
                                 self.noeud = self.arbre.noeuds[(x,y)]
                                 self.affiche_question = True
+                            elif laby[y][x] == 5 :
+                                derniere_coordonnee, reponse = self.chemin.pop()
+                                self.joueur.x_perso, self.joueur.y_perso = derniere_coordonnee
+                                self.coordonnees_question = derniere_coordonnee
+                                self.noeud = self.arbre.noeuds[derniere_coordonnee]
+                                self.affiche_retour = True
+                            elif laby[y][x] == "F":
+                                self.jeu_en_cours = False
+                                self.joueur.victoire(self.ecran, self.longueur, self.largeur)
 
-            self.carte.afficher()
-            self.joueur.afficher(self.ecran)
-            #self.masque()
+            if self.jeu_en_cours :
+                self.carte.afficher()
+                self.joueur.afficher(self.ecran)
+                self.masque()
 
-            if self.affiche_question :
-                self.interface.afficher(self.ecran, self.noeud)
+                if self.affiche_question :
+                    afficher_question(self.ecran, self.noeud, self.longueur, self.largeur)
+                if self.affiche_retour :
+                    afficher_retour(self.ecran, self.longueur, self.largeur)
 
             pygame.display.flip()
 
