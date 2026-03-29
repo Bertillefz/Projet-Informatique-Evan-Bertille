@@ -88,8 +88,11 @@ class Labyrinthe:
             return False
 
     def afficher_question(self, donnees):
+        temps = int((self.difficulte)*60 + self.temps_depart - time.time())
+        minutes = temps // 60
+        secondes = temps % 60
         print(f"\nQUESTION {self.profondeur_courante}")
-        print(f"Temps restants : {(self.difficulte)*60 + self.temps_depart - time.time() }")
+        print(f"Temps restants : {minutes} min {secondes} sec")
         print(self.noeud_courant.question)
 
     #provisoire

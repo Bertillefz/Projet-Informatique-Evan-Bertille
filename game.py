@@ -28,7 +28,11 @@ def tour_jeu(labyrinthe, question):
     labyrinthe.chemin.append(question) # on ajoute à la PILE
     options_melangees = labyrinthe.options_possibles()
     print(f"Choix possibles: {options_melangees[0][0]} (chemin A), {options_melangees[1][0]} (chemin B)")
-    saisie = input("Veuillez indiquer le chemin que vous souhaitez prendre (A ou B) : ").strip().upper()
+
+    saisie = None
+    while saisie not in ["A", "B"]:
+        saisie = input("Veuillez indiquer le chemin que vous souhaitez prendre (A ou B) : ").strip().upper()
+
     if labyrinthe.reponse_valide(saisie, options_melangees) :
         nouvelle_question = question.gauche
     else :
