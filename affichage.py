@@ -259,15 +259,15 @@ class Game:
                 afficher_regles(self.ecran, self.longueur, self.largeur)
                 pygame.display.flip()
                 for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        self.running = False
                     if event.type == pygame.KEYDOWN :
-                        if event.type == pygame.QUIT:
-                            self.running = False
                         if event.key == pygame.K_RETURN:
                             self.affiche_acceuil = False
                             self.temps_debut = time.time()
                 continue
 
-            if (60 + self.temps_debut - time.time()) < 0:
+            if (5 + self.temps_debut - time.time()) < 0:
                 self.jeu_en_cours = False
                 self.joueur.defaite(self.ecran, self.longueur, self.largeur)
 
