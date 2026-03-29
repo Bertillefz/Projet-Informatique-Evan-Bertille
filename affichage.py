@@ -183,6 +183,13 @@ def afficher_retour(surface, longueur,largeur):
     rect_question_2 = surface_question_2.get_rect(center=(rect.centerx, rect.centery + 40))
     surface.blit(surface_question_2, rect_question_2)
 
+def afficher_regles(surface, longueur, largeur):
+    surface.fill((0, 0, 0))
+    regles = pygame.image.load("images/regles.png")
+    regles = pygame.transform.scale(regles, (min(longueur, largeur), min(longueur, largeur)))
+    surface.blit(regles, (longueur // 2 - min(longueur, largeur) // 2, largeur // 2 - min(longueur, largeur) // 2))
+
+
 # VOIR https://github.com/formazione/pygame_quiz/tree/main
 
 class Joueur:
@@ -232,6 +239,7 @@ class Game:
 
         self.affiche_question = False
         self.affiche_retour = False
+        self.affiche_acceuil = True
         self.coordonnees_question = None
         self.jeu_en_cours = True
         self.noeud = None # où le joueur se trouve
@@ -247,8 +255,19 @@ class Game:
 
     def run(self):
         while self.running:
+            if self.affiche_acceuil :
+                afficher_regles(self.ecran, self.longueur, self.largeur)
+                pygame.display.flip()
+                for event in pygame.event.get():
+                    if event.type == pygame.KEYDOWN :
+                        if event.type == pygame.QUIT:
+                            self.running = False
+                        if event.key == pygame.K_RETURN:
+                            self.affiche_acceuil = False
+                            self.temps_debut = time.time()
+                continue
 
-            if (5 + self.temps_debut - time.time()) < 0:
+            if (60 + self.temps_debut - time.time()) < 0:
                 self.jeu_en_cours = False
                 self.joueur.defaite(self.ecran, self.longueur, self.largeur)
 
