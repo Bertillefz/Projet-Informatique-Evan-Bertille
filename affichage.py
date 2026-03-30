@@ -194,15 +194,103 @@ class Monstre:
 
     def __init__(self):
         self.points = 3000
+        self.x = 16
+        self.y = 11
+        # en haut / bas / droite / gauche
+        self.directions = [ (0, -1), (0, 1), (1,0), (-1,0)]
+        self.direction = random.choice(self.directions)
+        self.enregistrement_temps = time.time()
 
-    def attaque(self):
-        #s'il recoit des billes : -500 de points pour lui
-        pass
+    def subir_attaque(self):
+        self.points -= 500
+
+    def choix_deplacement(self):
+        directions_possibles = []
+        for x, y in self.directions :
+            if laby[self.y + y ][self.x + x] != 1 :
+                if 0 <= self.x + x < len(laby[0]) and 0 <= self.y + y < len(laby) :
+                    directions_possibles.append((x,y))
+        self.direction = random.choice(directions_possibles)
 
     def deplacement(self):
-        pass
+        #toutes les secondes prends une direction
+        #si il a réussi à monter en haut, continue en haut
+        temps = time.time()
+        if temps - self.enregistrement_temps > 1: #intervalle de 1 seconde
+            if laby[self.y + self.direction[1]][self.x + self.direction[0]] !=1:
+                if 0 <= self.y + self.direction[1] < len(laby) and 0 <= self.x + self.direction[0] < len(laby[0]):
+                    self.y += self.direction[1]
+                    self.x += self.direction[0]
+            else :
+                self.choix_deplacement()
+                if 0 <= self.y + self.direction[1] < len(laby) and 0 <= self.x + self.direction[0] < len(laby[0]) :
+                    if laby[self.y + self.direction[1]][self.x + self.direction[0]] != 1:
+                        self.y += self.direction[1]
+                        self.x += self.direction[0]
+            self.enregistrement_temps = time.time()
+
+    def afficher(self, surface):
+        monstre = pygame.image.load("images/monstres/monstre_rouge_droite.png")
+        monstre = pygame.transform.scale(monstre, (20, 20))
+        surface.blit(monstre, (self.x * 20, self.y * 20))
+        self.deplacement()
 
 # VOIR https://github.com/formazione/pygame_quiz/tree/main
+
+class BilleAttaque:
+
+    def __init__(self):
+        # (x + 1, y) si pacman_droite
+        # (x, y + 1 ) si pacman_bas
+        # (x - 1, y) si pacman_gauche
+        # (x, y - 1 ) si pacman_haut
+        self.x = 0
+        self.y = 0
+        self.direction = 0,0
+        self.attaque = False
+        self.enregistrement_temps = time.time()
+
+    def lancer(self, surface, x_pacman, y_pacman, indice):
+        # y -= 1 si pacman_haut
+        # y += 1 si pacman_bas
+        # x += 1 si pacman_droite toutes les secondes
+        # x -= 1 si pacman_gauche
+        # si elle rencontre un mur '1' elle disparait
+        self.x = x_pacman
+        self.y = y_pacman
+        if not self.attaque:
+            if indice == 0:
+                self.direction = 1, 0
+            elif indice == 1:
+                self.direction = -1, 0
+            elif indice == 2:
+                self.direction = 0, -1
+            elif indice == 3:
+                self.direction = 0, 1
+            self.attaque = True
+            self.enregistrement_temps = time.time()
+
+    def deplacement(self):
+        if self.attaque :
+            temps = time.time()
+            if temps - self.enregistrement_temps > 0.1 :
+                if laby[self.y + self.direction[1]][self.x + self.direction[0]] == 1 :
+                    self.attaque = False
+                else:
+                    self.y += self.direction[1]
+                    self.x += self.direction[0]
+                self.enregistrement_temps = time.time()
+
+
+    def afficher(self, surface):
+        #si le joueur appuie sur espace, une premier bille apparait devant lui et de déplace ensuite toutes les secondes
+        # s'il reappuie elle réapparait encore
+        #si elle touche un mur la bille disparait
+        # si elle touche un monstre : self.monstre.subir attaque
+        if self.attaque :
+            bille = pygame.image.load("images/bille_attaque.png")
+            bille = pygame.transform.scale(bille, (20, 20))
+            surface.blit(bille, (self.x * 20, self.y * 20))
 
 class Joueur:
 
@@ -215,10 +303,13 @@ class Joueur:
             pacman = pygame.transform.scale(pacman, (20, 20))
             self.pacmans.append(pacman)
         self.pacman = self.pacmans[0]
+        self.indice = 0
         self.vies = 3
+        self.bille = BilleAttaque()
 
     def afficher(self, surface):
         surface.blit(self.pacman, (self.x_perso * 20, self.y_perso * 20))
+        self.bille.afficher(surface)
 
     def victoire(self, surface, longueur, largeur):
         surface.fill((0,0,0))
@@ -232,11 +323,9 @@ class Joueur:
         defaite = pygame.transform.scale(defaite, (min(longueur,largeur), min(longueur,largeur)))
         surface.blit(defaite, (longueur // 2 - min(longueur, largeur) // 2, largeur // 2 - min(longueur, largeur) // 2))
 
-    def attaque(self):
-        # si collision avec monstres : perd 1 vie
-        # si perd ses 3 vies : defaite
-        pass
 
+    def deplacement(self):
+        pass
 
 
 
@@ -250,6 +339,7 @@ class Game:
 
         self.carte = Carte()
         self.joueur = Joueur()
+        self.monstre = Monstre()
         self.running = True
 
         self.arbre=Arbre((3,27), questions_geographie) # amelioration !!!!!!!
@@ -325,16 +415,24 @@ class Game:
                     else :
                         if event.key == pygame.K_DOWN:
                             y += 1
+                            self.joueur.indice = 3
                             self.joueur.pacman = self.joueur.pacmans[3]
                         if event.key == pygame.K_UP:
                             y -= 1
+                            self.joueur.indice =2
                             self.joueur.pacman = self.joueur.pacmans[2]
                         if event.key == pygame.K_LEFT:
                             x -= 1
+                            self.joueur.indice = 1
                             self.joueur.pacman = self.joueur.pacmans[1]
                         if event.key == pygame.K_RIGHT:
                             x += 1
+                            self.joueur.indice = 0
                             self.joueur.pacman = self.joueur.pacmans[0]
+
+                        if event.key == pygame.K_SPACE:
+                            self.joueur.bille.lancer(self.ecran, self.joueur.x_perso, self.joueur.y_perso, self.joueur.indice)
+
                         if 0 <= y < self.largeur and 0 <= x < self.longueur :
                             if laby[y][x] != 1:
                                 self.joueur.x_perso, self.joueur.y_perso = x, y
@@ -357,6 +455,8 @@ class Game:
                 self.joueur.afficher(self.ecran)
                 self.masque()
                 #afficher les monstres au dessus du masque
+                self.joueur.bille.deplacement()
+                self.monstre.afficher(self.ecran)
 
                 if self.affiche_question :
                     afficher_question(self.ecran, self.noeud, self.longueur, self.largeur)
