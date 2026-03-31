@@ -3,6 +3,15 @@ import random
 from questions import questions_geographie
 import time
 
+# DEFAITE : si le temps est dépasser (de 500 sec) OU si le joueur rentre en contact avec le monstre 3 fois
+# POUR BATTRE UN MONSTRE : il faut lui tirer dessus en appuyant sur espace jusqua ce qu'il qu'il disparaisse
+# VICTOIRE : si on arrive à temps à la sortie avec nb de vies suffisant
+
+#TOUCHE : a et b pour les questions // 1 et 2 pour choisir le retour // ESPACE pour attaquer
+# // touches bas haut gaud droite pour se deplacer
+
+
+
 # 1 les murs
 # 0 le chemins
 # 2 les intersections entre des chemins : où on pose la questions
@@ -193,9 +202,10 @@ def afficher_regles(surface, longueur, largeur):
 class Monstre:
 
     def __init__(self):
-        self.points = 3000
+        self.points = 1000
         self.x = 16
         self.y = 11
+        self.en_vie = True
         # en haut / bas / droite / gauche
         self.directions = [ (0, -1), (0, 1), (1,0), (-1,0)]
         self.direction = random.choice(self.directions)
@@ -203,6 +213,8 @@ class Monstre:
 
     def subir_attaque(self):
         self.points -= 500
+        if self.points <=0:
+            self.en_vie = False
 
     def choix_deplacement(self):
         directions_possibles = []
@@ -230,10 +242,11 @@ class Monstre:
             self.enregistrement_temps = time.time()
 
     def afficher(self, surface):
-        monstre = pygame.image.load("images/monstres/monstre_rouge_droite.png")
-        monstre = pygame.transform.scale(monstre, (20, 20))
-        surface.blit(monstre, (self.x * 20, self.y * 20))
-        self.deplacement()
+        if self.en_vie :
+            monstre = pygame.image.load("images/monstres/monstre_rouge_droite.png")
+            monstre = pygame.transform.scale(monstre, (20, 20))
+            surface.blit(monstre, (self.x * 20, self.y * 20))
+            self.deplacement()
 
 # VOIR https://github.com/formazione/pygame_quiz/tree/main
 
@@ -270,7 +283,7 @@ class BilleAttaque:
             self.attaque = True
             self.enregistrement_temps = time.time()
 
-    def deplacement(self):
+    def deplacement(self, monstre):
         if self.attaque :
             temps = time.time()
             if temps - self.enregistrement_temps > 0.1 :
@@ -279,6 +292,10 @@ class BilleAttaque:
                 else:
                     self.y += self.direction[1]
                     self.x += self.direction[0]
+                if monstre.en_vie :
+                    if self.x == monstre.x and self.y == monstre.y:
+                        monstre.subir_attaque()
+                        self.attaque = False
                 self.enregistrement_temps = time.time()
 
 
@@ -306,10 +323,17 @@ class Joueur:
         self.indice = 0
         self.vies = 3
         self.bille = BilleAttaque()
+        self.attaque_monstre_enregistrement = 0
 
     def afficher(self, surface):
         surface.blit(self.pacman, (self.x_perso * 20, self.y_perso * 20))
         self.bille.afficher(surface)
+
+    def subir_attaque(self):
+        temps = time.time()
+        if temps - self.attaque_monstre_enregistrement > 2 :
+            self.vies -=1
+            self.attaque_monstre_enregistrement = temps
 
     def victoire(self, surface, longueur, largeur):
         surface.fill((0,0,0))
@@ -375,7 +399,7 @@ class Game:
                             self.temps_debut = time.time()
                 continue
 
-            if (60 + self.temps_debut - time.time()) < 0:
+            if (500 + self.temps_debut - time.time()) < 0:
                 self.jeu_en_cours = False
                 self.joueur.defaite(self.ecran, self.longueur, self.largeur)
 
@@ -453,10 +477,16 @@ class Game:
             if self.jeu_en_cours :
                 self.carte.afficher()
                 self.joueur.afficher(self.ecran)
-                self.masque()
+                #self.masque()
                 #afficher les monstres au dessus du masque
-                self.joueur.bille.deplacement()
+                self.joueur.bille.deplacement(self.monstre)
                 self.monstre.afficher(self.ecran)
+                if self.monstre.en_vie :
+                    if self.joueur.x_perso == self.monstre.x and self.joueur.y_perso ==self.monstre.y :
+                        self.joueur.subir_attaque()
+                if self.joueur.vies <=0 :
+                    self.jeu_en_cours = False
+                    self.joueur.defaite(self.ecran, self.longueur, self.largeur)
 
                 if self.affiche_question :
                     afficher_question(self.ecran, self.noeud, self.longueur, self.largeur)
