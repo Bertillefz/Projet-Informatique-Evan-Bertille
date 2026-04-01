@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="images/illustrationsMD/logo.png" alt="logo" width="100%" />
+  <img src="images/illustrationsMD/logo.png" alt="logo" width="40%" />
 </div>
 
 # Quiz Labyrinthe
