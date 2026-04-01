@@ -28,33 +28,31 @@ La partie est perdue si le compteur de temps tombe à zéro ou si les 3 vies son
 
 ## Personnages
 
-Le joueur (Pacman) : 
-- Se déplace (Haut, Bas, Gauche, Droite)
+Le **joueur** : 
+- se déplace 
 - répond aux questions pour avancer
 - peut faire demi-tour 
 - peut tirer des billes d'attaque pour se défendre
 
-Le monstre : 
-- Se déplace aléatoirement dans le labyrinthe toutes les secondes
-- Il inflige des dégâts au contact
+Le **monstre** : 
+- se déplace aléatoirement dans le labyrinthe toutes les secondes
+- il fait perdre 1 vie quand il entre en contact avec le joueur
 
 ---
 
 ## Actions possibles
 
-Se déplacer sur le labyrinthe (à l'aide des flèches du clavier : haut / bas / gauche / droite)
+- `haut` / `bas` / `gauche` / `droite` : pour se déplacer sur le labyrinthe 
 
-Répondre aux questions (à l'aide des touches du clavier A et B)
+- touches `A` et `B` : pour répondre aux questions 
 
 <div align="center">
   <img src="images/illustrationsMD/touchesImpasse.png" alt="touches" width="50%" />
 </div>
 
-Attaquer les monstres avec des billes (avec la barre espace)
+- Barre `espace` : pour attaquer les monstres avec des billes 
 
-Gérer les culs-de-sac 
-- touche 1 pour rester
-- touche 2 pour remonter à la question précédente
+- touches `1` et `2` : pour rester ou pour remonter à la question précédente lorsque l'on attérit dans un cul de sac
 
 <div align="center">
   <img src="images/illustrationsMD/touchesQuestion.png" alt="touches" width="50%" />
