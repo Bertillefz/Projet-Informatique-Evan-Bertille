@@ -1,10 +1,14 @@
+<div align="center">
+  <img src="images/illustrationsMD/logo.png" alt="logo" width="100%" />
+</div>
+
 # Quiz Labyrinthe
 
 Pour réaliser ce jeu, nous avons d'abord commencer par une approche textuel, puis nous avons réaliser le code pour réaliser un jeu graphique.
 
 ### Description
 
-Quiz Labyrinthe est un jeu de vitesse et de réflexion.
+Quiz-Man est un jeu de vitesse et de réflexion.
 
 ### Aperçu de l'interface textuel
 
