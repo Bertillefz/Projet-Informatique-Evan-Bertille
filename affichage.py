@@ -399,7 +399,7 @@ class Game:
                             self.temps_debut = time.time()
                 continue
 
-            if (500 + self.temps_debut - time.time()) < 0:
+            if (120 + self.temps_debut - time.time()) < 0:
                 self.jeu_en_cours = False
                 self.joueur.defaite(self.ecran, self.longueur, self.largeur)
 
@@ -477,7 +477,7 @@ class Game:
             if self.jeu_en_cours :
                 self.carte.afficher()
                 self.joueur.afficher(self.ecran)
-                #self.masque()
+                self.masque()
                 #afficher les monstres au dessus du masque
                 self.joueur.bille.deplacement(self.monstre)
                 self.monstre.afficher(self.ecran)

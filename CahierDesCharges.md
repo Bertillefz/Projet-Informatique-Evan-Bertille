@@ -47,7 +47,7 @@ Le **monstre** :
 - touches `A` et `B` : pour répondre aux questions 
 
 <div align="center">
-  <img src="images/illustrationsMD/touchesImpasse.png" alt="touches" width="50%" />
+  <img src="images/illustrationsMD/touchesQuestion.png" alt="touches" width="50%" />
 </div>
 
 - Barre `espace` : pour attaquer les monstres avec des billes 
@@ -55,7 +55,7 @@ Le **monstre** :
 - touches `1` et `2` : pour rester ou pour remonter à la question précédente lorsque l'on attérit dans un cul de sac
 
 <div align="center">
-  <img src="images/illustrationsMD/touchesQuestion.png" alt="touches" width="50%" />
+  <img src="images/illustrationsMD/touchesImpasse.png" alt="touches" width="50%" />
 </div>
 
 
