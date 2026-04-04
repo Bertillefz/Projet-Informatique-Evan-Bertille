@@ -42,12 +42,13 @@ class Arbre:
 
 #Labrytinthe : l'arbre de jeu et le jeu en lui-même
 class Labyrinthe:
-    def __init__(self, difficulte, donnees, profondeur_max):
+    def __init__(self, difficulte,retour_facilite, donnees, profondeur_max):
         self.arbre = Arbre(donnees, profondeur_max)
         self.noeud_courant = self.arbre.racine
         self.profondeur_courante = 1
         self.temps_depart = time.time()
         self.difficulte = difficulte
+        self.retour_facilite = retour_facilite # vrai ou faux
         self.noeuds_erreurs = []
         self.chemin = [] # PILE
 

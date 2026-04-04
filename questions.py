@@ -1,26 +1,6 @@
 #sommaire des questions
-# tests
+
 # géographie
-
-
-
-questions_tests = [
-    {
-        "question": "Quelle est la capitale de France ?",
-        "options": ["Paris", "Lyon"],
-        "reponse": "Paris"
-    },
-    {
-        "question": "Quelle est la couleur de la terre ?",
-        "options": ["Marron", "Rose"],
-        "reponse": "Marron"
-    },
-    {
-        "question": "Quelle est la couleur du ciel ?",
-        "options": ["Bleu", "Vert"],
-        "reponse": "Bleu"
-    }
-    ]
 
 'QUESTIONS GEOGRAPHIE'
 
