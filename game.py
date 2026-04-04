@@ -4,16 +4,16 @@ from labyrinthe import *
 def choix_difficulte():
     print(f"\nCHOIX DE LA DIFFICULTE")
     print("Difficultés disponibles :")
-    print("1. Facile")
-    print("2. Moyen")
-    print("3. Difficile")
+    print("1. Facile - 5 minutes et un retour facilité")
+    print("2. Moyen - 2 minutes et un retour facilité")
+    print("3. Difficile - 1 minutes et pas de retour facilité")
     while True:
         try:
             type_choix = int(input("Choisissez le type (1 ou 2 ou 3) : "))
             if type_choix == 1:
                 return 5, True
             elif type_choix == 2:
-                return 3, True
+                return 2, True
             elif type_choix == 3:
                 return 1, False
             else:
@@ -113,9 +113,6 @@ def main():
         print("Pour gagner, il vous faut donc répondre à toutes les questions parfaitement.")
         print("Si vous ne répondez pas parfaitement, vous vous retrouverez dans un cul de sac.")
         print("Pour en sortir, vous ramenons sur vos anciennes questions pour les corriger.")
-        print("Le mode FACILE : 5 minutes et un retour facilité")
-        print("Le mode MOYEN : 2 minutes et un retour facilité")
-        print("Le mode DIFFICILE : 1 minute et pas de retour facilité")
 
     difficulte, retour_facilite = choix_difficulte()
     input("\nAppuyez sur Entrée pour commencer le jeu...")

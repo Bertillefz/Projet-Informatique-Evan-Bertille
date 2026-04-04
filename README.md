@@ -4,11 +4,11 @@
 
 # Quiz Labyrinthe
 
-Pour réaliser ce jeu, nous avons d'abord commencer par une approche textuel, puis nous avons réaliser le code pour réaliser un jeu graphique.
+Pour réaliser ce jeu, nous avons d'abord commencer par une approche textuel, puis nous avons réaliser le code pour réaliser un jeu graphique. La version textuel s'appelle Escape-Quiz. La version graphique s'appelle Quiz-Man.
 
 ### Description
 
-Quiz-Man est un jeu de vitesse et de réflexion.
+Quiz-Man et Escape-Quiz sont des jeux de vitesse et de réflexion.
 
 ### Aperçu de l'interface textuel
 

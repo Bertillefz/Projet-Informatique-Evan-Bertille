@@ -1,6 +1,6 @@
 # Cahier des charges
 
-Quiz de questions : le joueur se retrouve dans un labyrinthe et doit utiliser ses connaissances pour trouver son chemin.
+Jeu de vitesse et d'énigme (quiz de questions): le joueur se retrouve dans un labyrinthe et doit utiliser ses connaissances pour trouver son chemin.
 
 ---
 
