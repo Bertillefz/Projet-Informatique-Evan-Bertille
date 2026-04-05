@@ -217,13 +217,21 @@ class Monstre:
 
     def __init__(self):
         self.points = 2000
-        self.x = 16
-        self.y = 11
+
+        coordonnees_possibles = [(10, 11), (16,11), (36,15)]
+        #self.x = 16
+        #self.y = 11
+        coordonnees=random.choice(coordonnees_possibles)
+        self.x = coordonnees[0]
+        self.y = coordonnees[1]
+
         self.en_vie = True
         # en haut / bas / droite / gauche
         self.directions = [ (0, -1), (0, 1), (1,0), (-1,0)]
         self.direction = random.choice(self.directions)
         self.enregistrement_temps = time.time()
+        self.monstres = ["images/monstres/monstre_rouge_droite.png", "images/monstres/monstre_rose_gauche.png", "images/monstres/monstre_turquoise_droite.png"]
+        self.monstre = random.choice(self.monstres)
 
     def subir_attaque(self):
         self.points -= 500
@@ -257,7 +265,7 @@ class Monstre:
 
     def afficher(self, surface):
         if self.en_vie :
-            monstre = pygame.image.load("images/monstres/monstre_rouge_droite.png")
+            monstre = pygame.image.load(self.monstre)
             monstre = pygame.transform.scale(monstre, (20, 20))
             surface.blit(monstre, (self.x * 20, self.y * 20))
             self.deplacement()
@@ -296,7 +304,7 @@ class BilleAttaque:
             self.attaque = True
             self.enregistrement_temps = time.time()
 
-    def deplacement(self, monstre):
+    def deplacement(self, monstres):
         if self.attaque :
             temps = time.time()
             if temps - self.enregistrement_temps > 0.1 :
@@ -305,10 +313,11 @@ class BilleAttaque:
                 else:
                     self.y += self.direction[1]
                     self.x += self.direction[0]
-                if monstre.en_vie :
-                    if self.x == monstre.x and self.y == monstre.y:
-                        monstre.subir_attaque()
-                        self.attaque = False
+                for monstre in monstres :
+                    if monstre.en_vie :
+                        if self.x == monstre.x and self.y == monstre.y:
+                            monstre.subir_attaque()
+                            self.attaque = False
                 self.enregistrement_temps = time.time()
 
 
@@ -376,7 +385,7 @@ class Game:
 
         self.carte = Carte()
         self.joueur = Joueur()
-        self.monstre = Monstre()
+        self.monstres = [Monstre(), Monstre(), Monstre()]
 
         self.arbre=Arbre((3,27), questions_geographie)
         self.temps_debut = time.time()
@@ -397,24 +406,13 @@ class Game:
 
     def run(self):
         while self.running:
-            if self.accueil.affiche_acceuil :
-                self.accueil.afficher(self.ecran, self.longueur, self.largeur)
-                pygame.display.flip()
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        self.running = False
-                    if event.type == pygame.KEYDOWN :
-                        if event.key == pygame.K_RETURN:
-                            if self.accueil.etape ==1 :
-                                self.accueil.etape = 2
-                            else :
-                                self.accueil.affiche_acceuil = False
-                                self.temps_debut = time.time()
-                continue
 
+            'Gestion du temps'
             if (120 + self.temps_debut - time.time()) < 0:
                 self.jeu_en_cours = False
                 self.joueur.defaite(self.ecran, self.longueur, self.largeur)
+
+            'Les actions sur le clavier'
 
             x = self.joueur.x_perso
             y = self.joueur.y_perso
@@ -487,23 +485,53 @@ class Game:
                                 self.jeu_en_cours = False
                                 self.joueur.victoire(self.ecran, self.longueur, self.largeur)
 
+            'Affichage'
+
+            # affichage accueil
+            if self.accueil.affiche_acceuil:
+                self.accueil.afficher(self.ecran, self.longueur, self.largeur)
+                pygame.display.flip()
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        self.running = False
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_RETURN:
+                            if self.accueil.etape == 1:
+                                self.accueil.etape = 2
+                            else:
+                                self.accueil.affiche_acceuil = False
+                                self.temps_debut = time.time()
+                continue
+
+            #affichage jeu
             if self.jeu_en_cours :
                 self.carte.afficher()
                 self.joueur.afficher(self.ecran)
                 self.masque()
-                self.joueur.bille.deplacement(self.monstre)
-                self.monstre.afficher(self.ecran)
-                if self.monstre.en_vie :
-                    if self.joueur.x_perso == self.monstre.x and self.joueur.y_perso ==self.monstre.y :
-                        self.joueur.subir_attaque()
+                self.joueur.bille.deplacement(self.monstres)
+
+                for monstre in self.monstres :
+                    monstre.afficher(self.ecran)
+
+                for monstre in self.monstres :
+                    if monstre.en_vie :
+                        if self.joueur.x_perso == monstre.x and self.joueur.y_perso ==monstre.y :
+                            self.joueur.subir_attaque()
                 if self.joueur.vies <=0 :
                     self.jeu_en_cours = False
                     self.joueur.defaite(self.ecran, self.longueur, self.largeur)
 
+                #affichage des messages : question et retour
                 if self.carte.affiche_question :
                     self.carte.afficher_question(self.ecran, self.noeud, self.longueur, self.largeur)
                 if self.carte.affiche_retour :
                     self.carte.afficher_retour(self.ecran, self.longueur, self.largeur)
+
+                #affichage du temps
+                temps = int(120 + self.temps_debut - time.time())
+                police = pygame.font.SysFont("Consolas", 18, True)
+                chronometre = police.render(f"{temps} s", True, (255,255,255))
+                self.ecran.blit(chronometre, (10,10))
 
             pygame.display.flip()
 
