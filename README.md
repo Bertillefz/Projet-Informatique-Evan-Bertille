@@ -2,7 +2,7 @@
   <img src="images/illustrationsMD/logo.png" alt="logo" width="40%" />
 </div>
 
-# Quiz Labyrinthe
+# Quiz-Man / Escape-Quiz
 
 Pour réaliser ce jeu, nous avons d'abord commencé par une approche textuelle, puis nous avons réalisé un jeu graphique, plus agréable à jouer. La version textuelle s'appelle **Escape-Quiz**. La version graphique s'appelle **Quiz-Man**.
 
