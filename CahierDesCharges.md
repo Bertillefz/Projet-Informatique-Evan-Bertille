@@ -63,7 +63,7 @@ Le **monstre** :
 ### En version graphique
 
 <div align="center">
-  <img src="images/indications.png" alt="touches" width="40%" />
+  <img src="images/indications.png" alt="touches" width="20%" />
 </div>
 
 - `haut` / `bas` / `gauche` / `droite` : pour se déplacer sur le labyrinthe 
