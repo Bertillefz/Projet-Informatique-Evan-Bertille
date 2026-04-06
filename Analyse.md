@@ -36,6 +36,10 @@ Nous utilisons aussi des listes : gestion des monstres, deplacement joueur, dire
 
 ### Affichage graphique (`affichage.py`)
 
+<div align="center">
+  <img src="images/illustrationsMD/interactions.png" alt="laby" width="40%" />
+</div>
+
 #### Type de données : Game
 
 - Attributs : longueur (int), largeur (int), ecran (Surface), running (bool), carte (Carte), joueur (Joueur), monstres (list), accueil (Menu), coordonnees_question (tuple), jeu_en_cours (bool), noeud (Question), chemin (list)
