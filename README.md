@@ -4,7 +4,7 @@
 
 # Quiz Labyrinthe
 
-Pour réaliser ce jeu, nous avons d'abord commencer par une approche textuelle, puis nous avons réalisé un jeu graphique, plus agréable à jouer. La version textuelle s'appelle **Escape-Quiz**. La version graphique s'appelle **Quiz-Man**.
+Pour réaliser ce jeu, nous avons d'abord commencé par une approche textuelle, puis nous avons réalisé un jeu graphique, plus agréable à jouer. La version textuelle s'appelle **Escape-Quiz**. La version graphique s'appelle **Quiz-Man**.
 
 ### Description
 
@@ -26,7 +26,7 @@ Quiz-Man et Escape-Quiz sont des jeux de vitesse et de réflexion.
 
 ## Bibliothèque utilisée
 
-Pour réaliser l'interface graphique, nous avons donc utiliser la bibliotèque Pygame.
+Pour réaliser l'interface graphique, nous avons donc utilisé la bibliotèque Pygame.
 
 ---
 
@@ -34,7 +34,7 @@ Pour réaliser l'interface graphique, nous avons donc utiliser la bibliotèque P
 
 1. Vérifier que vous avez Python 3
 
-2. Ouvrez un terminal et exécuter la commande suivante : 
+2. Ouvrez un terminal et exécutez la commande suivante : 
 
 ```git clone https://github.com/Bertillefz/Projet-Informatique-Evan-Bertille.git```
 
@@ -44,7 +44,7 @@ Pour réaliser l'interface graphique, nous avons donc utiliser la bibliotèque P
 
 ## Exécution du programme
 
-Lancer le fichier principal.
+Lancez le fichier principal.
 
 - Pour un affichage graphique (conseillé) : ```python3 affichage.py```
 
@@ -64,7 +64,7 @@ Voici les différents fichiers de notre code :
 
 - `question.py` : Base de données des questions.
 
-*Pour l'affichage textuelle*
+*Pour l'affichage textuel*
 - `game.py` : Ce fichier contient les fonctions principales de l'affichage textuel.
 - `labyrinthe.py` : Ce fichier contient les méthodes utiles au jeu.
 

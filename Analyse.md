@@ -4,13 +4,13 @@
 
 ### Arbres
 
-L'**arbre** permet de modéliser le labyrinthe. Chaque intersection (noeud) correspond à une question qui mène vers deux arretes. Ces dernières dépendent du choix fait pas la joueur. Une seule branche permet de sortir du labyrinthe : c'est celle qui est associé aux bonnes réponses.
+L'**arbre** permet de modéliser le labyrinthe. Chaque intersection (noeud) correspond à une question qui mène vers deux arêtes. Ces dernières dépendent du choix fait par la joueur. Une seule branche permet de sortir du labyrinthe : c'est celle qui est associée aux bonnes réponses.
 
 ### Piles, dictionnaires et listes
 
 Une **pile** est utilisée pour mémoriser l'historique des questions et des positions du joueur. Lorsqu'il arrive dans un cul-de-sac, on dépile pour le ramener à l'état précédent.
 
-La **matrice** (pour la version graphique) permet de réprésenter les murs du labyrinthe et ses éléments. Chaque caractère représente un état.
+La **matrice** (pour la version graphique) permet de représenter les murs du labyrinthe et ses éléments. Chaque caractère représente un état.
 - 0 = chemin
 - 1 = mur
 - 2 = question
@@ -22,7 +22,7 @@ La **matrice** (pour la version graphique) permet de réprésenter les murs du l
   <img src="images/illustrationsMD/matriceLaby.png" alt="laby" width="50%" />
 </div>
 
-Les **dictionnaires** nous sont très utiles. Nous les utilisions pour la base de données des questions ainsi que pour lier les coordonnées du labyrinthe à la logique d'arbre de notre jeu.
+Les **dictionnaires** nous sont très utiles. Nous les utilisons pour la base de données des questions ainsi que pour lier les coordonnées du labyrinthe à la logique d'arbre de notre jeu.
 
 <div align="center">
   <img src="images/illustrationsMD/questions.png" alt="questions" width="50%" />
@@ -32,7 +32,7 @@ Nous utilisons aussi des listes : gestion des monstres, deplacement joueur, dire
 
 ---
 
-## POO : Progammation Orientée Objet
+## POO : Programmation Orientée Objet
 
 ### Affichage graphique (`affichage.py`)
 

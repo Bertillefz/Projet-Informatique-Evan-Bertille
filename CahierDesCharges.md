@@ -1,12 +1,12 @@
 # Cahier des charges
 
-Jeu de vitesse et d'énigme (quiz de questions): le joueur se retrouve dans un labyrinthe et doit utiliser ses connaissances pour trouver son chemin. Nous avons créer deux versions du jeu : une première version qui se joue avec la *console* (version **textuelle** : Escape-Quiz) et une version qui se joue avec *Pygame* (version **graphique** : Quiz-Man).
+Jeu de vitesse et d'énigme (quiz de questions): le joueur se retrouve dans un labyrinthe et doit utiliser ses connaissances pour trouver son chemin. Nous avons créé deux versions du jeu : une première version qui se joue avec la *console* (version **textuelle** : Escape-Quiz) et une version qui se joue avec *Pygame* (version **graphique** : Quiz-Man).
 
 ---
 
 ## Objectifs
 
-Le joueur doit trouver la sortie du labyrinthe en un certain temps, grâce aux questions qui va le guider dans ses choix.
+Le joueur doit trouver la sortie du labyrinthe en un certain temps, grâce aux questions qui vont le guider dans ses choix.
 
 - Pour la version graphique, il doit sortir en 2 minutes tout en survivant aux attaques des monstres qui se baladent dans le labyrinthe.
 
@@ -20,23 +20,23 @@ Le joueur se déplace dans les couloirs et rencontre des intersections.
 
 À chaque intersection, une question s'affiche. Le joueur doit répondre par A ou B pour avancer. 
 
-Une bonne réponse mène vers la sortie, une mauvaise mène forcèment vers un cul-de-sac.
+Une bonne réponse mène vers la sortie, une mauvaise mène forcément vers un cul-de-sac.
 
 ### En plus pour la version graphique
 
-Le joueur possède 1 seule vie. Entrer en contact avec un monstre fait perdre une vie, donc entraine sa mort directement.
+Le joueur possède 1 seule vie. Entrer en contact avec un monstre fait perdre une vie, donc entraîne sa mort directement.
 
 Le temps du jeu est de maximum 2 minutes.
 
 La partie est perdue s'il ne reste plus de temps de jeu ou si la vie du joueur est perdue à cause d'un monstre.
 
-En cas de cul-de-sac, le joueur est retourner à l'intersection précédente. Il a le choix d'y rester où de continuer de remonter à l'intersection précédente.
+En cas de cul-de-sac, le joueur est ramené à l'intersection précédente. Il a le choix d'y rester ou de continuer de remonter à l'intersection précédente.
 
 ### En plus pour la version textuelle
 
-Les niveaux de difficulté : Facile (5 min et un retour facilté) / Moyen ( 2 min et retour facilité) / Difficile (1 min et pas de retour facilité)
+Les niveaux de difficulté : Facile (5 min et un retour facilité) / Moyen ( 2 min et retour facilité) / Difficile (1 min et pas de retour facilité)
 
-- Le retour facilité : En cas de cul de sac, le joueur revient directement à sa première erreure commise lors du jeu.
+- Le retour facilité : En cas de cul de sac, le joueur revient directement à sa première erreur commise lors du jeu.
 
 - Pas de retour facilité : Le joueur doit retrouver par lui-même où il a commis ses erreurs.
 
@@ -63,7 +63,7 @@ Le **monstre** :
 ### En version graphique
 
 <div align="center">
-  <img src="images/indications.png" alt="touches" width="200%" />
+  <img src="images/indications.png" alt="touches" width="40%" />
 </div>
 
 - `haut` / `bas` / `gauche` / `droite` : pour se déplacer sur le labyrinthe 
