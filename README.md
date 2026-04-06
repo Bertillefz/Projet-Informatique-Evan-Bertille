@@ -4,19 +4,23 @@
 
 # Quiz Labyrinthe
 
-Pour réaliser ce jeu, nous avons d'abord commencer par une approche textuel, puis nous avons réaliser le code pour réaliser un jeu graphique. La version textuel s'appelle Escape-Quiz. La version graphique s'appelle Quiz-Man.
+Pour réaliser ce jeu, nous avons d'abord commencer par une approche textuelle, puis nous avons réalisé un jeu graphique, plus agréable à jouer. La version textuelle s'appelle **Escape-Quiz**. La version graphique s'appelle **Quiz-Man**.
 
 ### Description
 
 Quiz-Man et Escape-Quiz sont des jeux de vitesse et de réflexion.
 
-### Aperçu de l'interface textuel
+### Aperçu de l'interface textuelle
 
-
+<div align="center">
+  <img src="images/illustrationsMD/questionsT.png" alt="aff" width="40%" />
+</div>
 
 ### Aperçu de l'interface graphique
 
-
+<div align="center">
+  <img src="images/illustrationsMD/affichage_graphique.png" alt="aff" width="40%" />
+</div>
 
 ---
 
@@ -50,7 +54,7 @@ Lancer le fichier principal.
 
 ## Méthodes de jeu (version graphique)
 
-
+Voir `CahierDesCharges.md` (partie `Actions possibles`)
 
 ---
 
@@ -58,10 +62,13 @@ Lancer le fichier principal.
 
 Voici les différents fichiers de notre code : 
 
-- `game.py` : Ce fichier contient les fonctions principales de l'affichage textuel.
-- `labyrinthe.py` : Ce fichier contient les méthodes utiles au jeu.
 - `question.py` : Base de données des questions.
 
+*Pour l'affichage textuelle*
+- `game.py` : Ce fichier contient les fonctions principales de l'affichage textuel.
+- `labyrinthe.py` : Ce fichier contient les méthodes utiles au jeu.
+
+* Pour l'affichage graphique *
 - `affichage.py` : Ce fichier contient l'ensemble des fonctions et classes pour un affichage graphique.
 
 ---
