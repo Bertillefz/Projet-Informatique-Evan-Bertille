@@ -38,27 +38,27 @@ Nous utilisons aussi des listes : gestion des monstres, deplacement joueur, dire
 
 #### Type de données : Game
 
-- Attributs : longueur, largeur, ecran, running, carte, joueur, monstres, accueil, coordonnees_question, jeu_en_cours, noeud, chemin
+- Attributs : longueur (int), largeur (int), ecran (Surface), running (bool), carte (Carte), joueur (Joueur), monstres (list), accueil (Menu), coordonnees_question (tuple), jeu_en_cours (bool), noeud (Question), chemin (list)
 
 - Méthodes : masque, run (méthode principale du jeu)
 
 #### Type de données : Joueur
 
-- Attributs : pacmans, x_perso, y_perso, pacman, indice, vies, bille, attaque_monstre_enregistrement
+- Attributs : pacmans (list), x_perso (int), y_perso (int), pacman (Surface), indice (int), vies (int), bille (BilleAttaque), attaque_monstre_enregistrement (float)
 
-- Méthodes : afficher, subir_attaque, victoire, defaite
+- Méthodes : afficher(surface), subir_attaque(), victoire(surface, longueur, largeur), defaite (surface, longueur, largeur)
 
 #### Type de données : Monstre
 
-- Attributs : points, x, y, en_vie, directions, direction, enregistrement_temps, monstres, monstre
+- Attributs : points (int), x (int), y (int), en_vie (bool), directions (list), direction (tuple), enregistrement_temps (float), monstres (list), monstre (str)
 
-- Méthodes : subir_attaque, choix_deplacement, deplacement, afficher
+- Méthodes : subir_attaque(), choix_deplacement(), deplacement(), afficher(surface)
 
 #### Type de données : BilleAttaque
 
-- Attributs : x, y, direction, attaque, enregistrement_temps
+- Attributs : x (int), y (int), direction (tuple), attaque (bool), enregistrement_temps (float)
 
-- Méthodes : lancer, deplacement, afficher
+- Méthodes : lancer(surface, x_pacman, y_pacman, indice), deplacement(monstres), afficher(surface)
 
 #### Type de données : Arbre
 
@@ -68,9 +68,9 @@ Nous utilisons aussi des listes : gestion des monstres, deplacement joueur, dire
 
 #### Type de données : Question
 
-- Attributs : coordonnees, profondeur, bon_chemin, mauvais_chemin, choixA, choixB, bonne_touche, question, enfants
+- Attributs : coordonnees (tuple), profondeur (int), bon_chemin (tuple), mauvais_chemin (tuple), choixA (str), choixB (str), bonne_touche (int), question (str), enfants (list)
 
-- Méthodes : melange_choix
+- Méthodes : melange_choix(donnees_question)
 
 #### Type de données : Menu
 
@@ -88,7 +88,7 @@ Nous utilisons aussi des listes : gestion des monstres, deplacement joueur, dire
 
 #### Type de données : Noeud
 
-- Attributs : question, options, reponse, droite, gauche, parent
+- Attributs : question (str), options (list), reponse (str), droite (Noeud ou None), gauche (Noeud ou None), parent (Noeud ou None)
 
 #### Type de données : Arbre
 
@@ -98,7 +98,7 @@ Nous utilisons aussi des listes : gestion des monstres, deplacement joueur, dire
 
 #### Type de données : Labyrinthe
 
-- Attributs : arbre, noeud_courant, profondeur_courante, temps_depart, difficulte, retour_facilite, noeuds_erreurs, chemin
+- Attributs : arbre (Arbre), noeud_courant (Noeud), profondeur_courante (int), temps_depart (float), difficulte (int), retour_facilite (bool), noeuds_erreurs (list), chemin (list)
 
-- Méthodes : options_possibles, reponse_valide, peut_jouer, afficher_question, victoire 
+- Méthodes : options_possibles():list, reponse_valide(reponse, options), peut_jouer(), afficher_question(donnees), victoire():bool 
 
