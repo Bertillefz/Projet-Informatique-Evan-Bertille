@@ -52,7 +52,7 @@ Lancer le fichier principal.
 
 ---
 
-## Méthodes de jeu (version graphique)
+## Méthodes de jeu 
 
 Voir `CahierDesCharges.md` (partie `Actions possibles`)
 
@@ -68,7 +68,7 @@ Voici les différents fichiers de notre code :
 - `game.py` : Ce fichier contient les fonctions principales de l'affichage textuel.
 - `labyrinthe.py` : Ce fichier contient les méthodes utiles au jeu.
 
-* Pour l'affichage graphique *
+*Pour l'affichage graphique*
 - `affichage.py` : Ce fichier contient l'ensemble des fonctions et classes pour un affichage graphique.
 
 ---
