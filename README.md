@@ -10,7 +10,7 @@ Pour réaliser ce jeu, nous avons d'abord commencé par une approche textuelle, 
 
 Quiz-Man et Escape-Quiz sont des jeux de vitesse et de réflexion.
 
-### Aperçu de l'interface textuelle
+### Aperçu de l'interface textuel
 
 <div align="center">
   <img src="images/illustrationsMD/questionsT.png" alt="aff" width="40%" />
