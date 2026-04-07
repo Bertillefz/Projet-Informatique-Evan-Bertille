@@ -77,6 +77,7 @@ class Carte :
         self.affiche_question = False
         self.affiche_retour = False
 
+    # affichage du labyrinthe en lui-meme
     def afficher(self):
         fond_couleur = (0, 0, 0)
         mur_couleur = (0, 0, 255)
@@ -99,6 +100,7 @@ class Carte :
                     retour = pygame.transform.scale(image, (20, 20))
                     self.ecran.blit(retour, (j * 20, i * 20))
 
+    # affichage message : questions avec les deux possibilitées
     def afficher_question(self, surface, noeud, longueur, largeur):
         rect = pygame.Rect(0, (largeur // 2 - 150), longueur, 300)
         pygame.draw.rect(surface, (0, 0, 0), rect)
@@ -117,14 +119,14 @@ class Carte :
         rect_a = surf_a.get_rect(center=(rect.centerx, rect.centery + 70))
         surface.blit(surf_b, rect_a)
 
+    # affichage retour : retour avec les deux options
     def afficher_retour(self, surface, longueur, largeur):
         rect = pygame.Rect(0, (largeur // 2 - 100), longueur, 200)
         pygame.draw.rect(surface, (0, 0, 0), rect)
         pygame.draw.rect(surface, (255, 0, 0), rect, 20)
 
         police = pygame.font.SysFont("Consolas", 18, True)
-        surface_annonce = police.render("Oups cul-de-sac : vous êtes de retour à la dernière intersection", True,
-                                        (255, 255, 255))
+        surface_annonce = police.render("Oups cul-de-sac : vous êtes de retour à la dernière intersection", True,(255, 255, 255))
         rect_annonce = surface_annonce.get_rect(center=(rect.centerx, rect.centery - 40))
         surface.blit(surface_annonce, rect_annonce)
 
@@ -170,7 +172,7 @@ class Arbre:
 
 
     def creer_arbre(self, coordonnee):
-        if coordonnee not in intersections :
+        if coordonnee not in intersections : #fin du parcours
             return None
 
         donnees_question = random.choice(self.type_question)
@@ -193,18 +195,21 @@ class Menu :
         self.etape = 1
         self.affiche_acceuil = True
 
+    #etape 1 de l'accueil
     def afficher_regles(self, surface, longueur, largeur):
         surface.fill((0, 0, 0))
         regles = pygame.image.load("images/regles.png")
         regles = pygame.transform.scale(regles, (min(longueur, largeur), min(longueur, largeur)))
         surface.blit(regles, (longueur // 2 - min(longueur, largeur) // 2, largeur // 2 - min(longueur, largeur) // 2))
 
+    # etape 2 de l'accueil
     def afficher_indications(self, surface, longueur, largeur):
         surface.fill((0, 0, 0))
         image = pygame.image.load("images/indications.png")
         ind = pygame.transform.scale(image, (min(longueur, largeur), min(longueur, largeur)))
         surface.blit(ind, (longueur // 2 - min(longueur, largeur) // 2, largeur // 2 - min(longueur, largeur) // 2))
 
+    #méthode principale
     def afficher(self, surface, longueur, largeur):
         if self.etape == 1 :
             self.afficher_regles(surface, longueur, largeur)
@@ -216,11 +221,9 @@ class Menu :
 class Monstre:
 
     def __init__(self):
-        self.points = 2000
+        self.points = 2000 # monstre meurt au bout de 4 tirs
 
         coordonnees_possibles = [(10, 11), (16,11), (36,15)]
-        #self.x = 16
-        #self.y = 11
         coordonnees=random.choice(coordonnees_possibles)
         self.x = coordonnees[0]
         self.y = coordonnees[1]
@@ -238,6 +241,7 @@ class Monstre:
         if self.points <=0:
             self.en_vie = False
 
+    # choix de la direction aléatoire à prendre parmi les possibilités
     def choix_deplacement(self):
         directions_possibles = []
         for x, y in self.directions :
@@ -246,16 +250,16 @@ class Monstre:
                     directions_possibles.append((x,y))
         self.direction = random.choice(directions_possibles)
 
+    # fonction de déplacement principale du monstre
     def deplacement(self):
-        #toutes les secondes prends une direction
-        #si il a réussi à monter en haut, continue en haut
         temps = time.time()
         if temps - self.enregistrement_temps > 1: #intervalle de 1 seconde
+            # s'il n'y a pas de mur il continue d'avancer dans la meme direction
             if laby[self.y + self.direction[1]][self.x + self.direction[0]] !=1:
                 if 0 <= self.y + self.direction[1] < len(laby) and 0 <= self.x + self.direction[0] < len(laby[0]):
                     self.y += self.direction[1]
                     self.x += self.direction[0]
-            else :
+            else : # sinon il prend une autre direction
                 self.choix_deplacement()
                 if 0 <= self.y + self.direction[1] < len(laby) and 0 <= self.x + self.direction[0] < len(laby[0]) :
                     if laby[self.y + self.direction[1]][self.x + self.direction[0]] != 1:
@@ -274,22 +278,14 @@ class Monstre:
 class BilleAttaque:
 
     def __init__(self):
-        # (x + 1, y) si pacman_droite
-        # (x, y + 1 ) si pacman_bas
-        # (x - 1, y) si pacman_gauche
-        # (x, y - 1 ) si pacman_haut
         self.x = 0
         self.y = 0
         self.direction = 0,0
         self.attaque = False
         self.enregistrement_temps = time.time()
 
+    # lancer de bille : direction selon l'orientation du pacman (donc de son indice)
     def lancer(self, surface, x_pacman, y_pacman, indice):
-        # y -= 1 si pacman_haut
-        # y += 1 si pacman_bas
-        # x += 1 si pacman_droite toutes les secondes
-        # x -= 1 si pacman_gauche
-        # si elle rencontre un mur '1' elle disparait
         self.x = x_pacman
         self.y = y_pacman
         if not self.attaque:
@@ -304,12 +300,13 @@ class BilleAttaque:
             self.attaque = True
             self.enregistrement_temps = time.time()
 
+    # mouvement de la bille : suite de la méthode lancer
     def deplacement(self, monstres):
         if self.attaque :
             temps = time.time()
-            if temps - self.enregistrement_temps > 0.1 :
+            if temps - self.enregistrement_temps > 0.1 : # bille se déplace toutes les 0.1 sec
                 if laby[self.y + self.direction[1]][self.x + self.direction[0]] == 1 :
-                    self.attaque = False
+                    self.attaque = False # s'il y a un mur : il y a plus de bille
                 else:
                     self.y += self.direction[1]
                     self.x += self.direction[0]
@@ -322,10 +319,6 @@ class BilleAttaque:
 
 
     def afficher(self, surface):
-        #si le joueur appuie sur espace, une premier bille apparait devant lui et de déplace ensuite toutes les secondes
-        # s'il reappuie elle réapparait encore
-        #si elle touche un mur la bille disparait
-        # si elle touche un monstre : self.monstre.subir attaque
         if self.attaque :
             bille = pygame.image.load("images/bille_attaque.png")
             bille = pygame.transform.scale(bille, (20, 20))
@@ -343,7 +336,7 @@ class Joueur:
             pacman = pygame.transform.scale(pacman, (20, 20))
             self.pacmans.append(pacman)
         self.pacman = self.pacmans[0]
-        self.indice = 0
+        self.indice = 0 # position vers la droite
         self.vies = 1
         self.bille = BilleAttaque()
         self.attaque_monstre_enregistrement = 0
@@ -370,9 +363,6 @@ class Joueur:
         defaite = pygame.transform.scale(defaite, (min(longueur,largeur), min(longueur,largeur)))
         surface.blit(defaite, (longueur // 2 - min(longueur, largeur) // 2, largeur // 2 - min(longueur, largeur) // 2))
 
-    def deplacement(self):
-        pass
-
 'Jeu : gère les touches, et tous les affichages'
 class Game:
     def __init__(self):
@@ -396,6 +386,7 @@ class Game:
         self.noeud = None
         self.chemin = []
 
+    # masque : on fait un trou dans un écran noir pour voir le personnage
     def masque(self):
         masque = pygame.Surface((self.longueur, self.largeur), pygame.SRCALPHA)
         rayon = 100
@@ -447,6 +438,7 @@ class Game:
                             else :
                                 self.carte.affiche_retour = False
                                 self.carte.affiche_question = True
+                    # déplacement : en bas en haut à gauche à droite
                     else :
                         if event.key == pygame.K_DOWN:
                             y += 1
@@ -465,23 +457,23 @@ class Game:
                             self.joueur.indice = 0
                             self.joueur.pacman = self.joueur.pacmans[0]
 
-                        if event.key == pygame.K_SPACE:
+                        if event.key == pygame.K_SPACE: # attaque
                             self.joueur.bille.lancer(self.ecran, self.joueur.x_perso, self.joueur.y_perso, self.joueur.indice)
 
                         if 0 <= y < self.largeur and 0 <= x < self.longueur :
-                            if laby[y][x] != 1:
+                            if laby[y][x] != 1: # pas un mur
                                 self.joueur.x_perso, self.joueur.y_perso = x, y
-                            if laby[y][x] == 2:
+                            if laby[y][x] == 2: # une question
                                 self.coordonnees_question = (x,y)
                                 self.noeud = self.arbre.noeuds[(x,y)]
                                 self.carte.affiche_question = True
-                            elif laby[y][x] == 5 :
+                            elif laby[y][x] == 5 : # un cul de sac
                                 derniere_coordonnee, reponse = self.chemin.pop()
                                 self.joueur.x_perso, self.joueur.y_perso = derniere_coordonnee
                                 self.coordonnees_question = derniere_coordonnee
                                 self.noeud = self.arbre.noeuds[derniere_coordonnee]
                                 self.carte.affiche_retour = True
-                            elif laby[y][x] == "F":
+                            elif laby[y][x] == "F": # la fin
                                 self.jeu_en_cours = False
                                 self.joueur.victoire(self.ecran, self.longueur, self.largeur)
 
