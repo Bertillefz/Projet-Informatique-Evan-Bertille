@@ -98,7 +98,7 @@ Nous utilisons aussi des listes : gestion des monstres, deplacement joueur, dire
 
 - Attributs : type_questions (list), profondeur_max (int), racine (Noeud)
 
-- Méthodes : creer_arbre(profondeur_actuelle)
+- Méthodes : creer_arbre(profondeur_actuelle : int)
 
 #### Type de données : Labyrinthe
 
