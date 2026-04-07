@@ -44,7 +44,7 @@ Nous utilisons aussi des listes : gestion des monstres, deplacement joueur, dire
 
 - Attributs : longueur (int), largeur (int), ecran (Surface), running (bool), carte (Carte), joueur (Joueur), monstres (list), accueil (Menu), coordonnees_question (tuple), jeu_en_cours (bool), noeud (Question), chemin (list)
 
-- Méthodes : masque, run (méthode principale du jeu)
+- Méthodes : masque(), run() (méthode principale du jeu)
 
 #### Type de données : Joueur
 
@@ -66,9 +66,9 @@ Nous utilisons aussi des listes : gestion des monstres, deplacement joueur, dire
 
 #### Type de données : Arbre
 
-- Attributs : type_question, noeuds, racine
+- Attributs : type_question (list), noeuds (dict), racine (Question)
 
-- Méthodes : creer_arbre
+- Méthodes : creer_arbre(coordonnees)
 
 #### Type de données : Question
 
@@ -78,15 +78,15 @@ Nous utilisons aussi des listes : gestion des monstres, deplacement joueur, dire
 
 #### Type de données : Menu
 
-- Attributs : etape, affiche_accueil
+- Attributs : etape (int), affiche_accueil (bool)
 
-- Méthodes : afficher_regles, afficher_indications, afficher
+- Méthodes : afficher_regles(surface, longueur, largeur), afficher_indications(surface, longueur, largeur), afficher(surface, longueur, largeur)
 
 #### Type de données : Carte
 
-- Attributs : ecran, affiche_question, affiche_retour
+- Attributs : ecran (Surface), affiche_question (bool), affiche_retour (bool)
 
-- Méthodes : afficher, afficher_question, afficher_retour 
+- Méthodes : afficher(), afficher_question(surface, noeud, longueur, largeur), afficher_retour (surface, longueur, largeur)
 
 ### Affichage textuel (`labyrinthe.py`)
 
@@ -96,9 +96,9 @@ Nous utilisons aussi des listes : gestion des monstres, deplacement joueur, dire
 
 #### Type de données : Arbre
 
-- Attributs : type_questions, profondeur_max, racine
+- Attributs : type_questions (list), profondeur_max (int), racine (Noeud)
 
-- Méthodes : creer_arbre 
+- Méthodes : creer_arbre(profondeur_actuelle)
 
 #### Type de données : Labyrinthe
 
