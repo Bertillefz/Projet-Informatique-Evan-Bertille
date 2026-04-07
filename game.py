@@ -22,7 +22,7 @@ def choix_difficulte():
             print("Veuillez entrer un nombre valide.")
 
 
-
+# pose la question
 def tour_jeu(labyrinthe, question):
     labyrinthe.afficher_question(question)
     labyrinthe.chemin.append(question) # on ajoute à la PILE
@@ -41,6 +41,7 @@ def tour_jeu(labyrinthe, question):
     labyrinthe.profondeur_courante += 1
     return nouvelle_question
 
+# gère le retour - la remontée
 def cul_de_sac(labyrinthe, erreurs_chemin):
     print("\nCUL DE SAC")
     print("Vous êtes arrivé dans un cul de sac :/")
@@ -81,7 +82,7 @@ def cul_de_sac(labyrinthe, erreurs_chemin):
 
 
 
-
+# fonction de toute la gestion du jeu
 def jeu(labyrinthe):
     while labyrinthe.peut_jouer() :
         while labyrinthe.peut_jouer() and labyrinthe.profondeur_courante != labyrinthe.arbre.profondeur_max + 1 :
@@ -102,7 +103,7 @@ def jeu(labyrinthe):
             break
 
 
-
+# fonction principale
 def main():
     print("Bienvenue sur Escape Quiz!!")
     choix = input("\nEntrez R pour visualiser les règles du jeu... ")
@@ -133,28 +134,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-
-"""
-    print(f"\nCHOIX DU TYPE DE QUESTIONS ")
-    print("Voici les choix possibles :")
-    print("G - Questions sur la géographie ")
-    print("T - Tests ")
-    while True:
-        choix_jeu = input("Saisissez une de ces 3 options : G ou T ").strip().upper()
-        if choix_jeu in ("G","T"):
-                break
-        print("Veuillez faire un choix valide : G ou T...")
-
-    if choix_jeu == "G":
-        print("\nVous avez choisi des questions de géographie")
-        difficulte = choix_difficulte()
-        input("\nAppuyez sur Entrée pour commencer le jeu...")
-        labyrinthe = Labyrinthe(difficulte, questions_geographie, profondeur_max = 5)
-        jeu(labyrinthe)
-    elif choix_jeu == "T":
-        print("\nVous avez choisi de faire un test")
-        difficulte = choix_difficulte()
-        input("\nAppuyez sur Entrée pour commencer le jeu... ")
-        labyrinthe = Labyrinthe(difficulte, questions_tests, profondeur_max = 2)
-        jeu(labyrinthe)
-    """

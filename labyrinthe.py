@@ -96,7 +96,6 @@ class Labyrinthe:
         print(f"Temps restants : {minutes} min {secondes} sec")
         print(self.noeud_courant.question)
 
-    #provisoire
     def victoire(self):
         return "\nBravo !! vous avez gagné"
 
